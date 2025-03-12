@@ -1,5 +1,25 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+.env
 
+# Android specific
+android/.gradle/
+android/app/build/
+android/build/
+android/*
+
+# iOS specific
+ios/Pods/
+ios/build/
+ios/.generated/
+
+# Expo build
+expo-build/
+
+# VS Code
+.vscode/
+
+
+#-----
 # dependencies
 node_modules/
 
@@ -36,3 +56,5 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+# react-native-config codegen
+ios/tmp.xcconfig

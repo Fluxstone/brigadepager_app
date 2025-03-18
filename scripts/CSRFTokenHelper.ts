@@ -1,17 +1,21 @@
 import { encode as base64Encode } from "base-64";
+import {setItemAsync} from 'expo-secure-store';
 import Config from "react-native-config";
 
-let csrfToken: string | null = null;
+async function saveCSRF(CSRFKey: string) {    
+    await setItemAsync("CSRF_Token", CSRFKey);
+}
 
-export async function getCSRFToken(): Promise<void> {
+export async function getCSRFToken(usr?: string, pw?: string): Promise<void> {
     const connectionString = `${Config.API_BASE_URL}/api/csrf-token`;
 
-    var userName = "mail@prov.de";
-    var pw = "pass";
+    if ((usr && !pw) || (!usr && pw)) {
+        throw new Error("Both username and password must be provided together.");
+    }
 
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    headers.append("Authorization", "Basic " + base64Encode(`${userName}:${pw}`));
+    headers.append("Authorization", "Basic " + base64Encode(`${usr}:${pw}`));
 
     await fetch(connectionString, {
         method: "GET",
@@ -24,7 +28,7 @@ export async function getCSRFToken(): Promise<void> {
         return response.json();
     })
     .then(data => {
-        csrfToken = data.token;        
+        saveCSRF(data.token);  
     })
     .catch(err => {
         console.error("Fetch Error:", err);

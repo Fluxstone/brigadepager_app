@@ -2,9 +2,9 @@ import { getAllAlarmResponses } from '@/scripts/getRequests/getAllAlarmResponses
 import { getAllAlarms } from '@/scripts/getRequests/getAllAlarms';
 import { getAllStaff } from '@/scripts/getRequests/getAllStaff';
 import { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Alarm, AlarmResponse, CombinedAlarm, Staff } from '@/scripts/types';
 
 export default function Tab() {
@@ -26,8 +26,6 @@ export default function Tab() {
           setAlarms(alarmsResult);
           setResponses(responsesResult);
           setStaff(staffResult);
-  
-          setCombinedAlarm(combineAlarmAndResponses());
         } catch (err) {
           console.error(err);
         }
@@ -37,7 +35,12 @@ export default function Tab() {
     }, [])
   );
 
-  //Creates an array containing the alarms AND the positive and negative responses.
+  useEffect(() => {
+    if (alarms.length && responses.length && staff.length) {
+      setCombinedAlarm(combineAlarmAndResponses());
+    }
+  }, [alarms, responses, staff]);
+
   function combineAlarmAndResponses(): CombinedAlarm[] {
     //Add clear names to each response
     //TODO: Make this an API point in the backend
@@ -61,7 +64,7 @@ export default function Tab() {
         negativeResponses: negativeResponses
       }
     });
-
+    
     return alarmsWithPosAndNegResponses;
   }
 

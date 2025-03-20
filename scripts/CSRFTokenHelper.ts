@@ -1,14 +1,15 @@
 import { encode as base64Encode } from "base-64";
 import {setItemAsync} from 'expo-secure-store';
-import Config from "react-native-config";
+import Constants from 'expo-constants';
 
 async function saveCSRF(CSRFKey: string) {    
     await setItemAsync("CSRF_Token", CSRFKey);
 }
 
 export async function getCSRFToken(usr?: string, pw?: string): Promise<void> {
-    const connectionString = `${Config.API_BASE_URL}/api/csrf-token`;
-
+    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const connectionString = `${apiUrl}/api/csrf-token`;
+    
     if ((usr && !pw) || (!usr && pw)) {
         throw new Error("Both username and password must be provided together.");
     }
@@ -17,20 +18,23 @@ export async function getCSRFToken(usr?: string, pw?: string): Promise<void> {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", "Basic " + base64Encode(`${usr}:${pw}`));
 
-    await fetch(connectionString, {
-        method: "GET",
-        headers: headers
-    })
-    .then(response => {
-        if (!response.ok) {
+    try {
+        const response = await fetch(connectionString, {
+            method: "GET",
+            headers: headers
+        });
+    
+        if(!response.ok){
+            console.error(`HTTP error with status ${response.status} for CSRF request`);
+            console.error("Response body:", await response.text());
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
-    })
-    .then(data => {
-        saveCSRF(data.token);  
-    })
-    .catch(err => {
-        console.error("Fetch Error:", err);
-    });
+    
+        const data = await response.json();
+        await saveCSRF(data.token);
+    } catch (error) {
+        console.error("Fetch or parsing error while fetching CSRF token:", error);
+        console.error("Connection string:", connectionString);
+        console.error("Headers used:", headers);
+    }
 }

@@ -13,6 +13,7 @@ export default function Login() {
     const fetchTokens = async () => {
       const user_name = await SecureStore.getItemAsync("user_name");
       const user_pw = await SecureStore.getItemAsync("user_pw");
+
       if(user_name == null && user_pw == null) {
         //If user is not logged in
         console.error("Missing Credentials, please Log In");
@@ -21,11 +22,18 @@ export default function Login() {
         router.replace("/(tabs)/home");
       }
     };
+
     fetchTokens();
   }, []);
 
-  function login(){
-    performLoginAttempt(username, password);
+  async function login(){
+    var result = await performLoginAttempt(username, password);
+    if(result === true) {
+      console.log("Logging in");
+      router.replace("/(tabs)/home");
+    } else {
+      console.error("Login not successfull. Check PW.")
+    }
   }
 
   return (

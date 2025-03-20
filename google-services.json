@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "687135155084",
+    "project_id": "brigade-notifier",
+    "storage_bucket": "brigade-notifier.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687135155084:android:fb85d62fd7c2187cf42ca9",
+        "android_client_info": {
+          "package_name": "de.flx.brigadepager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqp9FJD9CoYQvjmlG_exXroVLUWoytDKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

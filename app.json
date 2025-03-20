@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mrfluxstone.firebrigadepager"
+      "googleServicesFile": "./google-services.json",
+      "package": "de.flx.brigadepager"
     },
     "web": {
       "bundler": "metro",
@@ -34,10 +35,15 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "API_BASE_URL": "http://10.0.2.2:8080"
     }
   }
 }

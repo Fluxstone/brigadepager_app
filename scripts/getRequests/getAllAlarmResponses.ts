@@ -1,34 +1,38 @@
 import { encode as base64Encode } from "base-64";
-import Config from "react-native-config";
 import getUserLoginData from "../helper/getUserLoginData";
+import Constants from "expo-constants";
 
 export async function getAllAlarmResponses(): Promise<any> {
-    const connectionString = `${Config.API_BASE_URL}/api/alarm-responses`;
-    
-    var usercreds = await getUserLoginData();
+
+    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const connectionString = `${apiUrl}/api/alarm-responses`;
     
     var result;
 
+    var usercreds = await getUserLoginData();
+    
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", "Basic " + base64Encode(`${usercreds.name}:${usercreds.pw}`));
 
-    await fetch(connectionString, {
-        method: "GET",
-        headers: headers
-    })
-    .then(response => {
-        if (!response.ok) {
+    try {
+        const response = await fetch(connectionString, {
+            method: "GET",
+            headers: headers
+        });
+
+        if(!response.ok){
+            console.error(`HTTP error with status ${response.status} for request`);
+            console.error("Response body:", await response.text());
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
-    })
-    .then(data => {
-        result = data;
-    })
-    .catch(err => {
-        console.error("Fetch Error:", err);
-    });
+        
+        result = await response.json();        
+    } catch (error) {
+        console.error("Fetch or parsing error while performing call (getAllAlarmResponses.ts):", error);
+        console.error("Connection string:", connectionString);
+        console.error("Headers used:", headers);
+    }
 
     return result;
 }

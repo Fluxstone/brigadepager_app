@@ -19,7 +19,7 @@ async function login(usr:string, pw:string) {
     headers.append("Authorization", "Basic " + base64Encode(`${usr}:${pw}`));
 
     const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
-    const connectionString = `${apiUrl}/api/users/${usr}`;
+    const connectionString = `${apiUrl}/api/staff/getByEmail/${usr}`;
     
     var result;
 
@@ -67,5 +67,8 @@ export default async function performLoginAttempt(usr:string, pw:string) : Promi
     //On success save userdata & return OK
     await SecureStore.setItemAsync("user_name", usr);
     await SecureStore.setItemAsync("user_pw", pw);
+    await SecureStore.setItemAsync("user_staffId", result.id);
+    await SecureStore.setItemAsync("user_deviceToken", result.deviceToken);
+
     return true;
 }

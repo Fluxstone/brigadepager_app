@@ -2,10 +2,12 @@ import { getAllAlarmResponses } from '@/scripts/getRequests/getAllAlarmResponses
 import { getAllAlarms } from '@/scripts/getRequests/getAllAlarms';
 import { getAllStaff } from '@/scripts/getRequests/getAllStaff';
 import { useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
 import { Alarm, AlarmResponse, CombinedAlarm, Staff } from '@/scripts/types';
+import AlarmCard from '@/components/AlarmCard';
+import { router } from 'expo-router';
 
 export default function Tab() {
   const [alarms, setAlarms] = useState<Alarm[]>([]);
@@ -40,7 +42,7 @@ export default function Tab() {
       setCombinedAlarm(combineAlarmAndResponses());
     }
   }, [alarms, responses, staff]);
-
+  
   function combineAlarmAndResponses(): CombinedAlarm[] {
     //Add clear names to each response
     //TODO: Make this an API point in the backend
@@ -68,41 +70,46 @@ export default function Tab() {
     return alarmsWithPosAndNegResponses;
   }
 
+  function navigateToEditAlarm(item: any){
+    router.push({
+      pathname: '/screens/ModifyAlarmScreen',
+      params: { alarm: JSON.stringify(item) }, // stringify if it's an object
+    });
+  }
+
+  function navigateToCreateNewAlarm(){
+    router.push('/screens/CreateNewAlarm');
+  }
+
   return (
     <View>
+      <Pressable onPress={navigateToCreateNewAlarm} style={styles.loginButton} android_ripple={{ color: "#ffffff50" }}>
+        <Text style={styles.loginButtonText}>Login</Text>
+      </Pressable>
     <FlatList
       data={combinedAlarms}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <View>
-          <Text>{item.message}</Text>
-          <Text>📅 {item.time}</Text>
-          <Text>-------</Text>
-          <Text>Positive</Text>
-          <FlatList
-            data={item.positiveResponses}
-            keyExtractor={(response) => response.id}
-            renderItem={({ item }) => (
-              <Text>{item.staffName}</Text>
-            )}
-            ListEmptyComponent={<Text>No positive responses</Text>}
-          />
-
-          <Text>-------</Text>
-          <Text>Negative</Text>
-          <FlatList
-            data={item.negativeResponses}
-            keyExtractor={(response) => response.id}
-            renderItem={({ item }) => (
-              <Text>{item.staffName}</Text>
-            )}
-            ListEmptyComponent={<Text>No positive responses</Text>}
-          />
-
-        </View>
+        <Pressable onPress={() => navigateToEditAlarm(item)}>
+          <AlarmCard item={item} />
+        </Pressable>
       )}
       ListEmptyComponent={<Text>No alarms found.</Text>}
     />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  loginButton: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    width: "90%",
+  },
+  loginButtonText: {
+    color: "white",
+  },
+});

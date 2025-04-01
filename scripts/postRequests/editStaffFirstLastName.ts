@@ -3,22 +3,16 @@ import getUserLoginData from "../helper/getUserLoginData";
 import Constants from "expo-constants";
 import * as SecureStore from 'expo-secure-store';
 
-//TODO: Check if JPARepo can just take care of this route. Maybe the route can be removed in the backend
-export async function editAlarm(alarmId: string, alarmMessage: string): Promise<any> {
+export async function editStaffFirstLastName(id:string, firstName: string, lastName: string): Promise<any> {
 
     const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
-    const connectionString = `${apiUrl}/api/alarms/editAlarm`;
+    const connectionString = `${apiUrl}/api/staff/changeName`;
     
     var result;
 
     var usercreds = await getUserLoginData();
     var CSRFToken = await SecureStore.getItemAsync("CSRF_Token");
     
-    var test = JSON.stringify({
-        alarmId: alarmId,
-        alarmMessage: alarmMessage,
-    });
-
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", "Basic " + base64Encode(`${usercreds.name}:${usercreds.pw}`));
@@ -28,8 +22,9 @@ export async function editAlarm(alarmId: string, alarmMessage: string): Promise<
             method: "POST",
             headers: headers,
             body: JSON.stringify({
-                alarmId: alarmId,
-                alarmMessage: alarmMessage,
+                staffId: id,
+                firstName: firstName,
+                lastName: lastName
             }),
         });
 

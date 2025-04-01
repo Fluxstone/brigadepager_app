@@ -42,3 +42,15 @@ export type Staff = {
   certificationsId: string;
   admin: boolean;
 };
+
+export type Certification = {
+  id: string;
+  atemschutzGeraetetraeger: boolean;
+  gruppenfuehrer: boolean;
+  maschinist: boolean;
+  sanitaeter: boolean;
+  truppfuehrer: boolean;
+  truppmann: boolean;
+  zugfuehrer: boolean;
+};
+

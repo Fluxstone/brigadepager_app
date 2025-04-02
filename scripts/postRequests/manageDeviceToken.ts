@@ -18,7 +18,6 @@ export async function manageDeviceToken(staffId: string, deviceToken: string): P
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", "Basic " + base64Encode(`${usercreds.name}:${usercreds.pw}`));
     headers.append("X-XSRF-TOKEN", `${CSRFToken}`)
-
     try {
         const response = await fetch(connectionString, {
             method: "POST",

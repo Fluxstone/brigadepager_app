@@ -8,6 +8,7 @@ import { useCallback, useEffect } from 'react';
 import { Alarm, AlarmResponse, CombinedAlarm, Staff } from '@/scripts/types';
 import AlarmCard from '@/components/AlarmCard';
 import { router } from 'expo-router';
+import DefaultButton from '@/components/DefaultButton';
 
 export default function Tab() {
   const [alarms, setAlarms] = useState<Alarm[]>([]);
@@ -43,6 +44,9 @@ export default function Tab() {
     }
   }, [alarms, responses, staff]);
   
+  /*Description:  This function combines alarms and the corresponding responses
+                  and returns an CombinedAlarm Array  
+  */              
   function combineAlarmAndResponses(): CombinedAlarm[] {
     //Add clear names to each response
     //TODO: Make this an API point in the backend
@@ -72,44 +76,46 @@ export default function Tab() {
 
   function navigateToEditAlarm(item: any){
     router.push({
-      pathname: '/screens/ModifyAlarmScreen',
-      params: { alarm: JSON.stringify(item) }, // stringify if it's an object
+      pathname: '/screens/manageAlarms/ModifyAlarmScreen',
+      params: { alarm: JSON.stringify(item) },
     });
   }
 
   function navigateToCreateNewAlarm(){
-    router.push('/screens/CreateNewAlarm');
+    router.push('/screens/manageAlarms/CreateNewAlarm');
   }
 
   return (
-    <View>
-      <Pressable onPress={navigateToCreateNewAlarm} style={styles.loginButton} android_ripple={{ color: "#ffffff50" }}>
-        <Text style={styles.loginButtonText}>Login</Text>
-      </Pressable>
-    <FlatList
-      data={combinedAlarms}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <Pressable onPress={() => navigateToEditAlarm(item)}>
-          <AlarmCard item={item} />
-        </Pressable>
-      )}
-      ListEmptyComponent={<Text>No alarms found.</Text>}
-    />
+    <View style={styles.container}>
+      <DefaultButton 
+        onPress={navigateToCreateNewAlarm}
+        style={styles.button}
+        title='Neuer Alarm'
+      />
+
+      <FlatList
+        data={combinedAlarms}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => navigateToEditAlarm(item)}>
+            <AlarmCard item={item} />
+          </Pressable>
+        )}
+        ListEmptyComponent={<Text>No alarms found.</Text>}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  loginButton: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: "center",
+  button: {
     width: "90%",
+    marginTop: 8,
+    marginBottom: 8
   },
-  loginButtonText: {
-    color: "white",
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -1,9 +1,10 @@
 import { encode as base64Encode } from "base-64";
-import Config from "react-native-config";
 import getUserLoginData from "../helper/getUserLoginData";
+import Constants from "expo-constants";
 
 export async function getAllUsers(): Promise<any> {
-    const connectionString = `${Config.API_BASE_URL}/api/users`;
+    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const connectionString = `${apiUrl}/api/users`;
     
     var usercreds = await getUserLoginData();
     

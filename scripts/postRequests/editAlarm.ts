@@ -13,11 +13,6 @@ export async function editAlarm(alarmId: string, alarmMessage: string): Promise<
 
     var usercreds = await getUserLoginData();
     var CSRFToken = await SecureStore.getItemAsync("CSRF_Token");
-    
-    var test = JSON.stringify({
-        alarmId: alarmId,
-        alarmMessage: alarmMessage,
-    });
 
     const headers = new Headers();
     headers.append("Content-Type", "application/json");

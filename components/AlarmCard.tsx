@@ -5,7 +5,7 @@ export default function AlarmCard({ item }:{item:any}) {
     return (
         <View style={styles.card}>
             <Text>{item.message}</Text>
-            <Text>📅 {item.time}</Text>
+            <Text>{item.time}</Text>
             <Text>-------</Text>
             <Text>Positive</Text>
             <FlatList

@@ -4,9 +4,9 @@ import { getAllStaff } from '@/scripts/getRequests/getAllStaff';
 import { Staff } from '@/scripts/types';
 import StaffCard from '@/components/StaffCard';
 import { useFocusEffect } from "@react-navigation/native";
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 
-export default function ManageUsersListScreen() {
+export default function ManageStaffScreen() {
   const [staff, setStaff] = useState<Staff[]>([]);
 
   const getStaff = async () => {
@@ -22,13 +22,14 @@ export default function ManageUsersListScreen() {
 
   function navigateToEditStaff(item:Staff) {
     router.push({
-      pathname: '/screens/EditStaff',
+      pathname: '/screens/manageStaff/editStaffScreen',
       params: { staff: JSON.stringify(item) }, // stringify if it's an object
     });
   }
 
   return (
     <View>
+      <Stack.Screen options={{ title: "Nutzerverwaltung" }} />
       <FlatList
         data={staff}
         keyExtractor={(item) => item.id}

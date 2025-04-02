@@ -1,6 +1,6 @@
 import { encode as base64Encode } from "base-64";
 import * as SecureStore from 'expo-secure-store';
-import { getCSRFToken } from "./CSRFTokenHelper";
+import { getCSRFToken } from "./helper/CSRFTokenHelper";
 import Constants from "expo-constants";
 
 //Get CSRF Token from secure storage
@@ -10,9 +10,7 @@ async function fetchCSRFfromSecureStorage() {
 }
 
 //TODO: Has to return the error when it gets one.
-//TODO: Change the API Call to staff instead of user
-//Login function. On success the usr_name and usr_pw are correct will return
-//result
+//Desc: Login function. Fetches Staff data. This is to check if the user login is correct.
 async function login(usr:string, pw:string) {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -45,7 +43,7 @@ async function login(usr:string, pw:string) {
     return result;
 }
 
-//If login result is ok save usr_name and pw to secure storage. Then return true
+//If login result is ok save user creds and additional info to secure storage. Then return true
 //and log user in
 export default async function performLoginAttempt(usr:string, pw:string) : Promise<any>{
 

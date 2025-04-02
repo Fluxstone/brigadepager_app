@@ -1,7 +1,9 @@
-import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { editAlarm } from '@/scripts/postRequests/editAlarm';
+import DefaultButton from '@/components/DefaultButton';
+import { Stack } from "expo-router";
 
 //TODO: This needs a success message when the alarm is updated.
 //TODO: Add a way to change the attendance of certain staff
@@ -14,44 +16,47 @@ export default function ModifyAlarmScreen() {
 
     const [alarmText, onChangeAlarmText] = useState(initAlarmMessage);
 
-    function send(){
-      editAlarm(alarmId, alarmText);
+    async function send(){
+      await editAlarm(alarmId, alarmText);
     }
 
     return (
-      <View>
+      <View style={styles.container}>
+        <Stack.Screen options={{ title: "Alarm bearbeiten" }} />
         <TextInput
-          style={styles.alarmMessage}
+          style={styles.textInput}
           onChangeText={onChangeAlarmText}
           value={alarmText}
+          placeholder="Alarm Nachricht"
+          keyboardType="default"
           multiline
+          returnKeyType="default"
         />
 
-        <Pressable onPress={send} style={styles.loginButton} android_ripple={{ color: "#ffffff50" }}>
-          <Text style={styles.loginButtonText}>Update</Text>
-        </Pressable>
+        <DefaultButton 
+          onPress={send}
+          style={styles.button}
+          title='Alarm aktualisieren'
+        />
       </View>
     );
   }
 
-  //TODO: Change class names
   const styles = StyleSheet.create({
-    alarmMessage: {
+    container: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    textInput: {
       height: 80,
       width: "90%",
-      margin: 12,
       borderWidth: 1,
       padding: 10,
+      borderRadius: 6,
+      marginTop: 8,
     },
-    loginButton: {
-      backgroundColor: "#007AFF",
-      paddingVertical: 12,
-      paddingHorizontal: 20,
-      borderRadius: 10,
-      alignItems: "center",
+    button: {
       width: "90%",
-    },
-    loginButtonText: {
-      color: "white",
+      marginTop: 8,
     },
   });

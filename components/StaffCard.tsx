@@ -2,7 +2,7 @@ import { Staff } from '@/scripts/types';
 import { View, Text, StyleSheet } from 'react-native';
 
 
-export default function AlarmCard({ item }:{item:Staff}) {
+export default function StaffCard({ item }:{item:Staff}) {
     return (
         <View style={styles.card}>
             <Text>{item.firstName} {item.lastName}</Text>

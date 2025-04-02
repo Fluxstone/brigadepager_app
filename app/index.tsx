@@ -1,8 +1,11 @@
-import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import performLoginAttempt from '../scripts/loginHelper'
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
+import DefaultButton from '@/components/DefaultButton';
+import DefaultTextBox from '@/components/DefaultTextBox';
+import { Stack } from "expo-router";
 
 export default function Login() {
 
@@ -38,26 +41,28 @@ export default function Login() {
 
   return (
     <View style={styles.viewContainer}>
-      <TextInput
-          style={styles.textInput}
-          onChangeText={onChangeUsername}
-          value={username}
-          placeholder="Nutzername"
-          keyboardType="default"
+      <Stack.Screen options={{ title: "Login" }} />
+      <DefaultTextBox 
+        onChangeText={onChangeUsername}
+        textValue={username}
+        placeholder={"Nutzername"}
+        secureTextEntry={false}
+        style={styles.textInput}
       />
 
-      <TextInput
-          style={styles.textInput}
-          onChangeText={onChangePassword}
-          value={password}
-          placeholder="Password"
-          keyboardType="default"
-          secureTextEntry={true}
+      <DefaultTextBox 
+        onChangeText={onChangePassword}
+        textValue={password}
+        placeholder={"Password"}
+        secureTextEntry={true}
+        style={styles.textInput}
       />
 
-      <Pressable onPress={login} style={styles.loginButton} android_ripple={{ color: "#ffffff50" }}>
-        <Text style={styles.loginButtonText}>Login</Text>
-      </Pressable>
+      <DefaultButton 
+        onPress={login}
+        style={styles.button}
+        title='Login'
+      />
     </View>
   );
 }
@@ -69,21 +74,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textInput: {
-    height: 40,
     width: "90%",
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+    marginBottom: 6
   },
-  loginButton: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: "center",
+  button: {
     width: "90%",
-  },
-  loginButtonText: {
-    color: "white",
   },
 });

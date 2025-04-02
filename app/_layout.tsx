@@ -2,7 +2,7 @@ import notificationSetup from '@/scripts/notificationSetup';
 import { Stack } from 'expo-router/stack';
 import { useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { getCSRFToken } from '@/scripts/CSRFTokenHelper';
+import { getCSRFToken } from '@/scripts/helper/CSRFTokenHelper';
 
 export default function Layout() {
 

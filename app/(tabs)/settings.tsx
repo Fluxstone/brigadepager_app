@@ -1,25 +1,41 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import DefaultButton from '@/components/DefaultButton';
+import * as SecureStore from 'expo-secure-store';
 
 export default function Tab() {
 
-  function navigateManageUsers(){
-    router.push("/screens/ManageStaff");
+  function navigateToManageUsers(){
+    router.push("/screens/manageStaff");
   }
 
-  function logout() {
+  function navigateToLogin(){
+    router.replace("/");
+  }
 
+  //TODO: Check if these deletes fail. If so dont log user out.
+  async function logout() {
+    console.log("Logout");
+    await SecureStore.deleteItemAsync("user_name");
+    await SecureStore.deleteItemAsync("user_pw");
+    await SecureStore.deleteItemAsync("user_staffId");
+    await SecureStore.deleteItemAsync("CSRF_Token");
+    navigateToLogin();
   }
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={navigateManageUsers} style={styles.loginButton} android_ripple={{ color: "#ffffff50" }}>
-        <Text style={styles.loginButtonText}>Manage Users</Text>
-      </Pressable>
+      <DefaultButton 
+        onPress={navigateToManageUsers}
+        style={styles.button}
+        title='Nutzerverwaltung'
+      />
 
-      <Pressable onPress={logout} style={styles.loginButton} android_ripple={{ color: "#ffffff50" }}>
-        <Text style={styles.loginButtonText}>Logout</Text>
-      </Pressable>
+      <DefaultButton 
+        onPress={logout}
+        style={styles.button}
+        title='Logout'
+      />
     </View>
   );
 }
@@ -30,15 +46,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loginButton: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: "center",
+  button: {
     width: "90%",
-  },
-  loginButtonText: {
-    color: "white",
+    marginBottom: 16
   },
 });

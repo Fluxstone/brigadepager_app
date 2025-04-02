@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react'
 import { Certification, Staff } from '@/scripts/types';
@@ -6,6 +6,9 @@ import { getStaffCertifications } from '@/scripts/getRequests/getStaffCertificat
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { saveCertification } from '@/scripts/postRequests/saveCertification';
 import { editStaffFirstLastName } from '@/scripts/postRequests/editStaffFirstLastName'
+import DefaultButton from '@/components/DefaultButton';
+import DefaultTextBox from '@/components/DefaultTextBox';
+import { Stack } from "expo-router";
 
 export default function EditStaff() {
   const { staff } = useLocalSearchParams();
@@ -45,6 +48,8 @@ export default function EditStaff() {
     getCertification();
   }, []);
 
+  //TODO: The calls here are redundant. There should only be one in the backend. I am calling two
+  //right now. Also no error handling ect...
   async function saveCerts() {
     const certificationData: Certification = {
       id: initStaffCertificationId,
@@ -67,82 +72,118 @@ export default function EditStaff() {
 
   return (
     <View>
-      <TextInput
-        style={styles.textInput}
-        onChangeText={setFirstName}
-        value={firstName}
-        placeholder="Vorname"
-      />
-      <TextInput
-        style={styles.textInput}
-        onChangeText={setLastName}
-        value={lastName}
-        placeholder="Nachname"
-      />
+      <Stack.Screen options={{ title: "Nutzer bearbeiten" }} />
+      <View style={styles.textInputContainer}>
+        <DefaultTextBox 
+          onChangeText={setFirstName}
+          textValue={firstName}
+          placeholder={"Vorname"}
+          secureTextEntry={false}
+          style={{marginBottom: 6}}
+        />
 
-      <View style={{ flexDirection: 'column', gap: 8 }}>
+        <DefaultTextBox 
+          onChangeText={setLastName}
+          textValue={lastName}
+          placeholder={"Nachname"}
+          secureTextEntry={false}
+          style={styles.textbox}
+        />
+      </View>
+
+      <View style={styles.certsContainer}>
         <View style={{ flexDirection: 'row' }}>
-          <BouncyCheckbox isChecked={atemschutzGeraetetraeger} onPress={(isChecked: boolean) => setAtemschutzGeraetetraeger(isChecked)} />
+          <BouncyCheckbox 
+            isChecked={atemschutzGeraetetraeger} 
+            onPress={(isChecked: boolean) => setAtemschutzGeraetetraeger(isChecked) } 
+            fillColor="#007AFF"
+          />
           <Text>AtemschutzGeraetetraeger</Text>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
-          <BouncyCheckbox isChecked={gruppenfuehrer} onPress={(isChecked: boolean) => setGruppenfuehrer(isChecked)} />
+          <BouncyCheckbox 
+            isChecked={gruppenfuehrer} 
+            onPress={(isChecked: boolean) => setGruppenfuehrer(isChecked)} 
+            fillColor="#007AFF"
+          />
           <Text>Gruppenführer</Text>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
-          <BouncyCheckbox isChecked={maschinist} onPress={(isChecked: boolean) => setMaschinist(isChecked)} />
+          <BouncyCheckbox 
+            isChecked={maschinist} 
+            onPress={(isChecked: boolean) => setMaschinist(isChecked)} 
+            fillColor="#007AFF"
+          />
           <Text>Maschinist</Text>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
-          <BouncyCheckbox isChecked={sanitaeter} onPress={(isChecked: boolean) => setSanitaeter(isChecked)} />
+          <BouncyCheckbox 
+            isChecked={sanitaeter} 
+            onPress={(isChecked: boolean) => setSanitaeter(isChecked)} 
+            fillColor="#007AFF"
+          />
           <Text>Sanitäter</Text>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
-          <BouncyCheckbox isChecked={truppfuehrer} onPress={(isChecked: boolean) => setTruppfuehrer(isChecked)} />
+          <BouncyCheckbox 
+            isChecked={truppfuehrer} 
+            onPress={(isChecked: boolean) => setTruppfuehrer(isChecked)} 
+            fillColor="#007AFF"
+          />
           <Text>Truppführer</Text>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
-          <BouncyCheckbox isChecked={truppmann} onPress={(isChecked: boolean) => setTruppmann(isChecked)} />
+          <BouncyCheckbox 
+            isChecked={truppmann} 
+            onPress={(isChecked: boolean) => setTruppmann(isChecked)} 
+            fillColor="#007AFF"  
+          />
           <Text>Truppmann</Text>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
-          <BouncyCheckbox isChecked={zugfuehrer} onPress={(isChecked: boolean) => setZugfuehrer(isChecked)} />
+          <BouncyCheckbox 
+            isChecked={zugfuehrer} 
+            onPress={(isChecked: boolean) => setZugfuehrer(isChecked)} 
+            fillColor="#007AFF"
+          />
           <Text>Zugführer</Text>
         </View>
       </View>
-
-
-      <Pressable onPress={saveCerts} style={styles.loginButton} android_ripple={{ color: "#ffffff50" }}>
-        <Text style={styles.loginButtonText}>Speichern</Text>
-      </Pressable>
       
+      <View style={styles.centerContainer}>
+        <DefaultButton 
+          title='Speichern' 
+          onPress={saveCerts}
+          style={styles.button} 
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  loginButtonText: {
-    color: "white",
+  textInputContainer: {
+    margin: 16
   },
-  textInput: {
-    height: 40,
-    width: "90%",
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+  centerContainer: {
+    flex: 1,
+    alignItems: "center"
   },
-  loginButton: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: "center",
-    width: "90%",
+  certsContainer: {
+    flexDirection: 'column', 
+    gap: 8,
+    margin: 16
   },
+  button: {
+    width: "90%"
+  },
+  textbox: {
+    marginBottom: 6
+  }
 });

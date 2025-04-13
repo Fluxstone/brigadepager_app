@@ -1,7 +1,6 @@
 import { encode as base64Encode } from "base-64";
 import * as SecureStore from 'expo-secure-store';
 import { getCSRFToken } from "./helper/CSRFTokenHelper";
-import Constants from "expo-constants";
 
 //Get CSRF Token from secure storage
 async function fetchCSRFfromSecureStorage() {
@@ -11,13 +10,12 @@ async function fetchCSRFfromSecureStorage() {
 
 //TODO: Has to return the error when it gets one.
 //Desc: Login function. Fetches Staff data. This is to check if the user login is correct.
-async function login(usr:string, pw:string) {
+async function login(usr:string, pw:string, serverAddr: string) {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", "Basic " + base64Encode(`${usr}:${pw}`));
 
-    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
-    const connectionString = `${apiUrl}/api/staff/getByEmail/${usr}`;
+    const connectionString = `${serverAddr}/api/staff/getByEmail/${usr}`;
     
     var result;
 
@@ -45,7 +43,7 @@ async function login(usr:string, pw:string) {
 
 //If login result is ok save user creds and additional info to secure storage. Then return true
 //and log user in
-export default async function performLoginAttempt(usr:string, pw:string) : Promise<any>{
+export default async function performLoginAttempt(usr:string, pw:string, serverAddr: string) : Promise<any>{
 
     //IF Csrf is not yet set get CSRF from Backend & save it    
     if(await fetchCSRFfromSecureStorage() == null){
@@ -53,7 +51,7 @@ export default async function performLoginAttempt(usr:string, pw:string) : Promi
     }
 
     //Try logging in using the provided data.
-    const result = await login(usr, pw);
+    const result = await login(usr, pw, serverAddr);
     
     //On fail... & return FAILURE.
     if(result === undefined){
@@ -65,6 +63,7 @@ export default async function performLoginAttempt(usr:string, pw:string) : Promi
     //On success save userdata & return OK
     await SecureStore.setItemAsync("user_name", usr);
     await SecureStore.setItemAsync("user_pw", pw);
+    await SecureStore.setItemAsync("server_address", serverAddr);
     await SecureStore.setItemAsync("user_staffId", result.id);
     await SecureStore.setItemAsync("user_deviceToken", result.deviceToken);
 

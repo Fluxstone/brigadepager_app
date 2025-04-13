@@ -1,11 +1,10 @@
 import { encode as base64Encode } from "base-64";
-import getUserLoginData from "../helper/getUserLoginData";
-import Constants from "expo-constants";
 import * as SecureStore from 'expo-secure-store';
+import { getServerURL, getUserLoginData } from "../helper/getSecureStorageItems";
 
 export async function createAlarm(time: Date, message: string): Promise<any> {
 
-    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const apiUrl = await getServerURL();
     const connectionString = `${apiUrl}/api/alarms`;
     
     var result;

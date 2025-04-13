@@ -1,12 +1,11 @@
 import { encode as base64Encode } from "base-64";
-import getUserLoginData from "../helper/getUserLoginData";
-import Constants from "expo-constants";
+import { getServerURL, getUserLoginData } from "../helper/getSecureStorageItems";
 import * as SecureStore from 'expo-secure-store';
 
 //TODO: Check if JPARepo can just take care of this route. Maybe the route can be removed in the backend
 export async function editAlarm(alarmId: string, alarmMessage: string): Promise<any> {
 
-    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const apiUrl = await getServerURL();
     const connectionString = `${apiUrl}/api/alarms/editAlarm`;
     
     var result;

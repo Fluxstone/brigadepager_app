@@ -1,10 +1,9 @@
 import { encode as base64Encode } from "base-64";
-import Constants from "expo-constants";
-import getUserLoginData from "../helper/getUserLoginData";
+import { getServerURL, getUserLoginData } from "../helper/getSecureStorageItems";
 
 export async function getAllStaff(): Promise<any> {
     
-    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const apiUrl = await getServerURL();
     const connectionString = `${apiUrl}/api/staff`;
     
     var usercreds = await getUserLoginData();

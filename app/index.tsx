@@ -9,6 +9,7 @@ import { Stack } from "expo-router";
 
 export default function Login() {
 
+  const [serverAddress, setServerAddress] = React.useState('');
   const [username, onChangeUsername] = React.useState('');
   const [password, onChangePassword] = React.useState('');
 
@@ -30,7 +31,7 @@ export default function Login() {
   }, []);
 
   async function login(){
-    var result = await performLoginAttempt(username, password);
+    var result = await performLoginAttempt(username, password, serverAddress);
     if(result === true) {
       console.log("Logging in");
       router.replace("/(tabs)/home");
@@ -42,6 +43,14 @@ export default function Login() {
   return (
     <View style={styles.viewContainer}>
       <Stack.Screen options={{ title: "Login" }} />
+      <DefaultTextBox 
+        onChangeText={setServerAddress}
+        textValue={serverAddress}
+        placeholder={"Server Addresse"}
+        secureTextEntry={false}
+        style={styles.textInput}
+      />
+
       <DefaultTextBox 
         onChangeText={onChangeUsername}
         textValue={username}

@@ -18,6 +18,7 @@ export default function Tab() {
     console.log("Logout");
     await SecureStore.deleteItemAsync("user_name");
     await SecureStore.deleteItemAsync("user_pw");
+    await SecureStore.deleteItemAsync("server_address");
     await SecureStore.deleteItemAsync("user_staffId");
     await SecureStore.deleteItemAsync("CSRF_Token");
     navigateToLogin();

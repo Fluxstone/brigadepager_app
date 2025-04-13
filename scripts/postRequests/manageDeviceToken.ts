@@ -1,12 +1,11 @@
 import { encode as base64Encode } from "base-64";
-import getUserLoginData from "../helper/getUserLoginData";
-import Constants from "expo-constants";
+import { getServerURL, getUserLoginData } from "../helper/getSecureStorageItems";
 import * as SecureStore from 'expo-secure-store';
 
 //Todo: Add input verification. Also manipulating someone elses device token is still possible here
 export async function manageDeviceToken(staffId: string, deviceToken: string): Promise<any> {
 
-    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const apiUrl = await getServerURL();
     const connectionString = `${apiUrl}/api/staff/deviceToken`;
     
     var result;

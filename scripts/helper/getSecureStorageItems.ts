@@ -7,6 +7,14 @@ async function fetchCSRFfromSecureStorage() {
     return {name, pw};
 }
 
-export default async function getUserLoginData() {
+async function fetchServerUrlfromSecureStorage() {
+    return await SecureStore.getItemAsync("server_address");
+}
+
+export async function getUserLoginData() {
     return await fetchCSRFfromSecureStorage();
+}
+
+export async function getServerURL() {
+    return await fetchServerUrlfromSecureStorage();
 }

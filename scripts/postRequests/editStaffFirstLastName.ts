@@ -1,11 +1,10 @@
 import { encode as base64Encode } from "base-64";
-import getUserLoginData from "../helper/getUserLoginData";
-import Constants from "expo-constants";
+import { getServerURL, getUserLoginData } from "../helper/getSecureStorageItems";
 import * as SecureStore from 'expo-secure-store';
 
 export async function editStaffFirstLastName(id:string, firstName: string, lastName: string): Promise<any> {
 
-    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
+    const apiUrl = await getServerURL();
     const connectionString = `${apiUrl}/api/staff/changeName`;
     
     var result;

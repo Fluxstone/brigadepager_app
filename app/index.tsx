@@ -14,7 +14,7 @@ export default function Login() {
   const [password, onChangePassword] = React.useState('');
 
   React.useEffect(() => {
-    const fetchTokens = async () => {
+    const fetchLogin = async () => {
       const user_name = await SecureStore.getItemAsync("user_name");
       const user_pw = await SecureStore.getItemAsync("user_pw");
 
@@ -27,7 +27,7 @@ export default function Login() {
       }
     };
 
-    fetchTokens();
+    fetchLogin();
   }, []);
 
   async function login(){
@@ -78,7 +78,7 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   viewContainer: {
-    flex: 1, 
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },

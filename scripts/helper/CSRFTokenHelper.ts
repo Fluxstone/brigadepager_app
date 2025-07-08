@@ -10,7 +10,7 @@ export async function getCSRFToken(usr?: string, pw?: string): Promise<void> {
     const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
     const connectionString = `${apiUrl}/api/csrf-token`;
     
-    if ((usr && !pw) || (!usr && pw)) {
+    if (usr == null || pw == null) {
         throw new Error("Both username and password must be provided together.");
     }
 

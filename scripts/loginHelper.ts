@@ -1,6 +1,6 @@
-import {encode as base64Encode} from "base-64";
+import { encode as base64Encode } from "base-64";
 import * as SecureStore from 'expo-secure-store';
-import {getCSRFToken} from "./helper/CSRFTokenHelper";
+import { getCSRFToken } from "./helper/CSRFTokenHelper";
 
 //Get CSRF Token from secure storage
 async function fetchCSRFfromSecureStorage() {
@@ -64,11 +64,7 @@ export default async function performLoginAttempt(usr:string, pw:string, serverA
     await SecureStore.setItemAsync("user_pw", pw);
     await SecureStore.setItemAsync("server_address", serverAddr);
     await SecureStore.setItemAsync("user_staffId", result.id);
+    await SecureStore.setItemAsync("user_deviceToken", result.deviceToken);
 
-    if (result?.deviceToken) {
-        await SecureStore.setItemAsync("user_deviceToken", result.deviceToken);
-    } else {
-        console.warn("deviceToken ist null und wird nicht gespeichert.");
-    }
     return true;
 }

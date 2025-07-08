@@ -20,6 +20,7 @@ function setNotifListeners() : void {
 
 export default function notificationSetup(){
     //TODO: Migrate if possible. See -> https://rnfirebase.io/migrating-to-v22
+    // @ts-ignore
     globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
     requestUserPermission();
     setNotifListeners();

@@ -36,7 +36,7 @@ export async function editAlarm(alarmId: string, alarmMessage: string): Promise<
         //TODO: I should ALWAYS expect a json or need to build another Intecteptor for this.
         result = await response;        
     } catch (error) {
-        console.error("Fetch or parsing error while performing call (getAllAlarmResponses.ts):", error);
+        console.error("Fetch or parsing error while performing call (editAlarm.ts):", error);
         console.error("Connection string:", connectionString);
         console.error("Headers used:", headers);
     }

@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react'
 import DatePicker from 'react-native-date-picker'
 import { createAlarm } from '@/scripts/postRequests/createAlarm';

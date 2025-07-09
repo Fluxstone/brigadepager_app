@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 //Get CSRF Token from secure storage
-async function fetchCSRFfromSecureStorage() {
+async function fetchUserLoginDataFromSecureStorage() {
     var name = await SecureStore.getItemAsync("user_name");
     var pw = await SecureStore.getItemAsync("user_pw");
     return {name, pw};
@@ -12,7 +12,7 @@ async function fetchServerUrlfromSecureStorage() {
 }
 
 export async function getUserLoginData() {
-    return await fetchCSRFfromSecureStorage();
+    return await fetchUserLoginDataFromSecureStorage();
 }
 
 export async function getServerURL() {

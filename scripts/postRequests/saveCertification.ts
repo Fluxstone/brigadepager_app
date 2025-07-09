@@ -35,7 +35,7 @@ export async function saveCertification(certification:Certification): Promise<an
         //TODO: I should ALWAYS expect a json or need to build another Intecteptor for this.
         result = await response;        
     } catch (error) {
-        console.error("Fetch or parsing error while performing call (getAllAlarmResponses.ts):", error);
+        console.error("Fetch or parsing error while performing call (saveCertification.ts):", error);
         console.error("Connection string:", connectionString);
         console.error("Headers used:", headers);
     }

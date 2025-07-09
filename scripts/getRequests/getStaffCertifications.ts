@@ -29,7 +29,7 @@ export async function getStaffCertifications(certificationId:string): Promise<an
         
         result = await response.json();        
     } catch (error) {
-        console.error("Fetch or parsing error while performing call (getAllAlarms.ts):", error);
+        console.error("Fetch or parsing error while performing call (getStaffCertifications.ts):", error);
         console.error("Connection string:", connectionString);
         console.error("Headers used:", headers);
     } 

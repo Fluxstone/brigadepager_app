@@ -13,22 +13,24 @@ export async function getAllUsers(): Promise<any> {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", "Basic " + base64Encode(`${usercreds.name}:${usercreds.pw}`));
 
-    await fetch(connectionString, {
-        method: "GET",
-        headers: headers
-    })
-    .then(response => {
-        if (!response.ok) {
+    try {
+        const response = await fetch(connectionString, {
+            method: "GET",
+            headers: headers
+        });
+
+        if(!response.ok){
+            console.error(`HTTP error with status ${response.status} for request`);
+            console.error("Response body:", await response.text());
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
-    })
-    .then(data => {
-        result = data;
-    })
-    .catch(err => {
-        console.error("Fetch Error:", err);
-    });
+
+        result = await response.json();
+    } catch (error) {
+        console.error("Fetch or parsing error while performing call (getAllStaff.ts):", error);
+        console.error("Connection string:", connectionString);
+        console.error("Headers used:", headers);
+    }
 
     return result;
 }

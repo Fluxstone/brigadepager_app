@@ -1,11 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { format } from 'date-fns';
+import {Alarm} from "@/scripts/types";
 
-type Alarm = {
-    id: string;
-    message: string;
-    time: string;
-};
 
 export default function AlarmDisplay({ alarm }: { alarm: Alarm | null }) {
     if (!alarm) {

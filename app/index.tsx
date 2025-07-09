@@ -15,6 +15,7 @@ export default function Login() {
 
   React.useEffect(() => {
     const fetchLogin = async () => {
+      //TODO: Could be getUserLoginData()?
       const user_name = await SecureStore.getItemAsync("user_name");
       const user_pw = await SecureStore.getItemAsync("user_pw");
 
@@ -30,6 +31,7 @@ export default function Login() {
     fetchLogin();
   }, []);
 
+  //TODO: Needs propper Errors that are not console.logs()
   async function login(){
     var result = await performLoginAttempt(username, password, serverAddress);
     if(result === true) {

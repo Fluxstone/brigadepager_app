@@ -58,3 +58,5 @@ yarn-error.*
 app-example
 # react-native-config codegen
 ios/tmp.xcconfig
+
+./expo-env.d.ts

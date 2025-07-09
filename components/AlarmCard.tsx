@@ -1,6 +1,7 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 
 
+//TODO: Accept "Alarm" instead of "any". No "PosResponse" or "NegResponse" in Type yet.
 export default function AlarmCard({ item }:{item:any}) {
     return (
         <View style={styles.card}>

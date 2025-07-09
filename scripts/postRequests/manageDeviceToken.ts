@@ -35,7 +35,7 @@ export async function manageDeviceToken(staffId: string, deviceToken: string): P
         
         result = await response.json();        
     } catch (error) {
-        console.error("Fetch or parsing error while performing call (getAllAlarmResponses.ts):", error);
+        console.error("Fetch or parsing error while performing call (manageDeviceToken.ts):", error);
         console.error("Connection string:", connectionString);
         console.error("Headers used:", headers);
     }

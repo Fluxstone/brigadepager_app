@@ -46,7 +46,7 @@ export default async function performLoginAttempt(usr:string, pw:string, serverA
 
     //IF Csrf is not yet set get CSRF from Backend & save it    
     if(await fetchCSRFfromSecureStorage() == null){
-        await getCSRFToken(usr, pw);
+        await getCSRFToken(usr, pw, serverAddr);
     }
 
     //Try logging in using the provided data.

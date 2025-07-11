@@ -6,9 +6,8 @@ async function saveCSRF(CSRFKey: string) {
     await setItemAsync("CSRF_Token", CSRFKey);
 }
 
-export async function getCSRFToken(usr?: string, pw?: string): Promise<void> {
-    const apiUrl = Constants.expoConfig?.extra?.API_BASE_URL;
-    const connectionString = `${apiUrl}/api/csrf-token`;
+export async function getCSRFToken(usr?: string, pw?: string, addr?: string): Promise<void> {
+    const connectionString = `${addr}/api/csrf-token`;
     
     if (usr == null || pw == null) {
         throw new Error("Both username and password must be provided together.");

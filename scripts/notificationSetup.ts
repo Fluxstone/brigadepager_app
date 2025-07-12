@@ -1,5 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import * as Notifications from 'expo-notifications';
+import {getItemAsync} from "expo-secure-store";
+import {manageDeviceToken} from "@/scripts/postRequests/manageDeviceToken";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -9,11 +11,30 @@ Notifications.setNotificationHandler({
     }),
 });
 
+//Todo: Needs to respect users choice of Push Notifs (ALLOW / DISALLOW)
+async function getFcmToken() {
+    try {
+        const token = await messaging().getToken();
+        if (token) {
+            console.log('FCM Token:', token);
+            const staffId = await getItemAsync("user_staffId");
+            if(staffId) {
+                await manageDeviceToken(staffId, token);
+            }
+        } else {
+            console.warn('FCM token not received');
+        }
+    } catch (error) {
+        console.error('Error getting FCM token:', error);
+    }
+}
+
 //TODO: Catch errors in Auth Status here
 async function requestUserPermission() {
     const settings = await Notifications.requestPermissionsAsync();
     const granted = settings.granted || settings.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL;
     console.log("Notification permissions granted:", granted);
+    await getFcmToken();
 }
 
 function setNotifListeners(): void {

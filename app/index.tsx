@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import DefaultButton from '@/components/DefaultButton';
 import DefaultTextBox from '@/components/DefaultTextBox';
 import { Stack } from "expo-router";
+import Toast from "react-native-toast-message";
 
 export default function Login() {
 
@@ -74,6 +75,7 @@ export default function Login() {
         style={styles.button}
         title='Login'
       />
+      <Toast/>
     </View>
   );
 }
